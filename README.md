@@ -45,7 +45,7 @@ docker run -p 5000:5000 whisper-transcriber
 ```
 
 说明：
-- Docker 构建里会先安装兼容版 `setuptools<82` 和 `wheel`
+- Docker 构建里会先安装兼容版 `setuptools==80.9.0` 和 `wheel`
 - `openai-whisper` 会用非隔离构建方式安装，避免部分云平台上出现 `pkg_resources` 缺失导致的构建失败
 
 ## 公网部署建议
