@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>录音转文字工具</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  </head>
+  <body>
+    <main class="shell">
+      <section class="hero">
+        <p class="eyebrow">Whisper Transcriber</p>
+        <h1>公网可部署的 AI 转写站</h1>
+        <p class="intro">
+          使用 Whisper 模型将录音转成可下载的文本。支持 <strong>{{ supported_formats }}</strong>，单文件最大 <strong>{{ max_upload_mb }}MB</strong>。当前模型：<strong>{{ model_name }}</strong>
+        </p>
+      </section>
+
+      <section class="card">
+        <form action="{{ url_for('transcribe_audio') }}" method="post" enctype="multipart/form-data" class="upload-form">
+          <label class="file-picker" for="audio">
+            <span>选择音频文件（{{ supported_formats }}）</span>
+            <input id="audio" type="file" name="audio" accept=".mp3,.m4a,.wav,audio/mpeg,audio/mp4,audio/x-m4a,audio/wav,audio/x-wav" required>
+          </label>
+          <button type="submit">开始转写</button>
+        </form>
+
+        <p class="helper">
+          适合部署到云服务器或容器平台，对外提供上传、转写、下载 TXT 的完整流程。
+        </p>
+
+        {% if error %}
+        <div class="message error">{{ error }}</div>
+        {% endif %}
+
+        {% if success %}
+        <div class="message success">{{ success }}</div>
+        {% endif %}
+
+        {% if transcript %}
+        <section class="result">
+          <div class="result-header">
+            <h2>转写结果</h2>
+            <a class="download-link" href="{{ download_url }}">下载 {{ output_filename }}</a>
+          </div>
+          <textarea readonly>{{ transcript }}</textarea>
+        </section>
+        {% endif %}
+      </section>
+    </main>
+  </body>
+</html>

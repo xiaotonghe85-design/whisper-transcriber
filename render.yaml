@@ -1,0 +1,6 @@
+services:
+  - type: web
+    name: whisper-transcriber
+    runtime: docker
+    plan: starter
+    autoDeploy: true
