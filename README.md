@@ -6,6 +6,7 @@
 
 - 上传 `.mp3`、`.m4a`、`.wav` 录音
 - 使用 Whisper 转写
+- 支持阿拉伯语、西班牙语、英语、韩语、日语、德语、泰语、法语转写为中文
 - 页面直接展示结果
 - 一键下载 `.txt`
 - 提供 `/health` 健康检查
@@ -83,6 +84,10 @@ docker run -p 5000:5000 whisper-transcriber
 - `WHISPER_MODEL`
   - 默认值：`base`
   - 可选示例：`tiny`、`base`、`small`、`medium`、`large`
+- `OPENAI_API_KEY`
+  - 用于把外语转写结果翻译成简体中文
+- `OPENAI_TRANSLATION_MODEL`
+  - 默认值：`gpt-4.1-mini`
 - `MAX_UPLOAD_MB`
   - 默认值：`100`
   - 控制单个上传文件的大小上限
@@ -94,7 +99,7 @@ docker run -p 5000:5000 whisper-transcriber
 示例：
 
 ```bash
-WHISPER_MODEL=small MAX_UPLOAD_MB=200 .venv/bin/python app.py
+WHISPER_MODEL=small OPENAI_API_KEY=your_key MAX_UPLOAD_MB=200 .venv/bin/python app.py
 ```
 
 ## 注意
@@ -102,5 +107,6 @@ WHISPER_MODEL=small MAX_UPLOAD_MB=200 .venv/bin/python app.py
 - `openai-whisper` 依赖本机可用的 `ffmpeg`
 - 首次运行 Whisper 时会下载模型文件
 - 当前版本支持 `.mp3`、`.m4a`、`.wav`
+- “阿拉伯语/西班牙语/英语/韩语/日语/德语/泰语/法语转中文”需要配置 `OPENAI_API_KEY`
 - 如果要真正开放给公网，建议放在云服务器、Render、Railway、Fly.io 或自建 Docker 环境，并配反向代理与 HTTPS
 - 当前版本把转写结果写到本机/容器文件系统，适合单机部署；如果你要长期公网运营，建议后续接对象存储和数据库

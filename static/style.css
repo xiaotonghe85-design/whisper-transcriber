@@ -79,6 +79,26 @@ h1 {
   gap: 16px;
 }
 
+.select-group {
+  display: grid;
+  gap: 8px;
+}
+
+.select-group span {
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.select-group select {
+  min-height: 52px;
+  padding: 0 16px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.8);
+  font: inherit;
+  color: var(--text);
+}
+
 .file-picker {
   display: flex;
   align-items: center;
