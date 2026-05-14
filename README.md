@@ -70,6 +70,10 @@ docker run -p 5000:5000 whisper-transcriber
 4. Railway 会读取 `Dockerfile` 或 `railway.toml`
 5. 在 Networking 里生成公网域名
 
+注意：
+- 如果使用 Docker 部署，优先让容器自己的 `CMD` 启动应用
+- 不要在 Railway 后台额外填写一个会覆盖 Docker `CMD` 的旧 `Start Command`
+
 参考官方文档：
 - [Deploy a Flask App | Railway](https://docs.railway.com/guides/flask)
 - [Deploying with the CLI | Railway](https://docs.railway.com/cli/deploying)
