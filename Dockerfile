@@ -12,7 +12,9 @@ WORKDIR /app
 RUN apt-get update && apt-get install -y --no-install-recommends ffmpeg && rm -rf /var/lib/apt/lists/*
 
 COPY requirements.txt .
-RUN pip install --upgrade pip && pip install -r requirements.txt
+RUN pip install --upgrade pip setuptools wheel
+RUN pip install Flask==3.0.3 gunicorn==23.0.0 imageio-ffmpeg==0.6.0
+RUN pip install --no-build-isolation openai-whisper==20240930
 
 COPY . .
 
