@@ -7,7 +7,7 @@
 - 上传 `.mp3`、`.m4a`、`.wav` 录音
 - 使用 Whisper 转写
 - 支持阿拉伯语、西班牙语、英语、韩语、日语、德语、泰语、法语转写为中文
-- 默认使用免费 LibreTranslate / Argos Translate 兼容接口完成外语转中文
+- 默认使用免费 LibreTranslate / Argos Translate 兼容接口，并在失败时自动切换到 MyMemory
 - 页面直接展示结果
 - 一键下载 `.txt`
 - 提供 `/health` 健康检查
@@ -92,6 +92,8 @@ docker run -p 5000:5000 whisper-transcriber
 - `LIBRETRANSLATE_API_KEY`
   - 默认留空
   - 只有当你使用带鉴权的 LibreTranslate 实例时才需要填写
+- `MYMEMORY_URL`
+  - 默认值：`https://api.mymemory.translated.net/get`
 - `MAX_UPLOAD_MB`
   - 默认值：`100`
   - 控制单个上传文件的大小上限
@@ -111,6 +113,6 @@ WHISPER_MODEL=small MAX_UPLOAD_MB=200 .venv/bin/python app.py
 - `openai-whisper` 依赖本机可用的 `ffmpeg`
 - 首次运行 Whisper 时会下载模型文件
 - 当前版本支持 `.mp3`、`.m4a`、`.wav`
-- 默认外语转中文走免费 LibreTranslate / Argos Translate 兼容接口；公开免费实例可能会限流或临时不可用
+- 默认外语转中文先走免费 LibreTranslate / Argos Translate，失败后自动切到 MyMemory；公开免费实例可能会限流或临时不可用
 - 如果要真正开放给公网，建议放在云服务器、Render、Railway、Fly.io 或自建 Docker 环境，并配反向代理与 HTTPS
 - 当前版本把转写结果写到本机/容器文件系统，适合单机部署；如果你要长期公网运营，建议后续接对象存储和数据库

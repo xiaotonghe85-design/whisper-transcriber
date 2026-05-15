@@ -36,6 +36,10 @@ LIBRETRANSLATE_URL = os.getenv(
     "https://translate.argosopentech.com/translate",
 ).strip()
 LIBRETRANSLATE_API_KEY = os.getenv("LIBRETRANSLATE_API_KEY", "").strip()
+MYMEMORY_URL = os.getenv(
+    "MYMEMORY_URL",
+    "https://api.mymemory.translated.net/get",
+).strip()
 
 SUPPORTED_LANGUAGE_OPTIONS = [
     ("auto", "自动检测"),
@@ -119,6 +123,22 @@ def translate_text_to_chinese(text: str, source_language_label: str) -> str:
     if source_code is None:
         raise RuntimeError(f"不支持从 {source_language_label} 翻译成中文。")
 
+    translation_errors: list[str] = []
+    if TRANSLATION_PROVIDER in {"libretranslate", "auto"}:
+        try:
+            return translate_via_libretranslate(text, source_code)
+        except Exception as exc:  # pragma: no cover - depends on remote service
+            translation_errors.append(f"LibreTranslate: {exc}")
+
+    try:
+        return translate_via_mymemory(text, source_code)
+    except Exception as exc:  # pragma: no cover - depends on remote service
+        translation_errors.append(f"MyMemory: {exc}")
+
+    raise RuntimeError("；".join(translation_errors))
+
+
+def translate_via_libretranslate(text: str, source_code: str) -> str:
     payload = {
         "q": text,
         "source": source_code,
@@ -151,15 +171,40 @@ def translate_text_to_chinese(text: str, source_language_label: str) -> str:
     return translated
 
 
+def translate_via_mymemory(text: str, source_code: str) -> str:
+    query = urllib.parse.urlencode(
+        {
+            "q": text,
+            "langpair": f"{source_code}|zh-CN",
+        }
+    )
+    url = f"{MYMEMORY_URL}?{query}"
+
+    try:
+        with urllib.request.urlopen(url, timeout=60) as response:
+            body = response.read().decode("utf-8")
+    except urllib.error.HTTPError as exc:
+        detail = exc.read().decode("utf-8", errors="ignore")
+        raise RuntimeError(f"翻译接口返回 HTTP {exc.code}: {detail}") from exc
+    except urllib.error.URLError as exc:
+        raise RuntimeError(f"无法连接翻译接口：{exc.reason}") from exc
+
+    parsed = json.loads(body)
+    translated = ((parsed.get("responseData") or {}).get("translatedText") or "").strip()
+    if not translated:
+        raise RuntimeError("翻译接口没有返回可用中文内容。")
+    return translated
+
+
 def humanize_translation_error(exc: Exception) -> str:
     error_text = str(exc)
     normalized = error_text.lower()
     if "http 429" in normalized or "rate limit" in normalized:
-        return "免费翻译接口当前较忙，请稍后重试。"
+        return "免费翻译接口当前较忙，主备接口都没有及时响应，请稍后重试。"
     if "http 403" in normalized or "http 401" in normalized:
         return "当前翻译接口拒绝了请求，请检查 LibreTranslate 配置。"
     if "unable to connect" in normalized or "无法连接翻译接口" in error_text:
-        return "当前免费翻译接口暂时不可用，请稍后重试。"
+        return "当前免费翻译接口暂时不可用，主备接口都连接失败，请稍后重试。"
     return f"中文翻译暂时不可用：{error_text}"
 
 
@@ -178,6 +223,7 @@ def render_home(**context):
         max_upload_mb=MAX_UPLOAD_MB,
         language_options=SUPPORTED_LANGUAGE_OPTIONS,
         translation_provider=TRANSLATION_PROVIDER,
+        translation_endpoints=[LIBRETRANSLATE_URL, MYMEMORY_URL],
         **context,
     )
 
@@ -197,7 +243,7 @@ def health():
             "supported_formats": sorted(ALLOWED_EXTENSIONS),
             "translation_enabled": True,
             "translation_provider": TRANSLATION_PROVIDER,
-            "translation_endpoint": LIBRETRANSLATE_URL,
+            "translation_endpoints": [LIBRETRANSLATE_URL, MYMEMORY_URL],
             "target_language": "zh-CN",
         }
     )
