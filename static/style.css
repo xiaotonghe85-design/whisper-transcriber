@@ -1,14 +1,16 @@
 :root {
-  --bg: #f5efe4;
-  --panel: rgba(255, 252, 246, 0.92);
-  --text: #1b1a17;
-  --muted: #655f55;
-  --accent: #146356;
-  --accent-strong: #0d4f45;
-  --line: rgba(27, 26, 23, 0.12);
+  --bg: #f7f0e3;
+  --panel: rgba(255, 252, 246, 0.94);
+  --panel-strong: rgba(255, 249, 239, 0.98);
+  --text: #161512;
+  --muted: #62584b;
+  --accent: #0f6c5b;
+  --accent-strong: #0a5446;
+  --accent-soft: rgba(15, 108, 91, 0.1);
+  --line: rgba(22, 21, 18, 0.1);
   --error: #9f2d2d;
   --success: #1f6a43;
-  --shadow: 0 24px 60px rgba(57, 45, 27, 0.12);
+  --shadow: 0 28px 70px rgba(68, 50, 24, 0.12);
 }
 
 * {
@@ -21,19 +23,48 @@ body {
   font-family: "Avenir Next", "PingFang SC", "Noto Sans SC", sans-serif;
   color: var(--text);
   background:
-    radial-gradient(circle at top left, rgba(255, 211, 143, 0.5), transparent 30%),
-    radial-gradient(circle at right, rgba(20, 99, 86, 0.2), transparent 35%),
-    linear-gradient(135deg, #f7f1e5 0%, #ece4d6 100%);
+    radial-gradient(circle at top left, rgba(255, 202, 120, 0.52), transparent 26%),
+    radial-gradient(circle at 85% 12%, rgba(15, 108, 91, 0.18), transparent 24%),
+    linear-gradient(135deg, #faf3e7 0%, #efe4d0 52%, #f8f3eb 100%);
 }
 
 .shell {
-  width: min(920px, calc(100% - 32px));
+  width: min(1080px, calc(100% - 32px));
   margin: 0 auto;
-  padding: 56px 0 72px;
+  padding: 52px 0 72px;
 }
 
 .hero {
-  margin-bottom: 24px;
+  margin-bottom: 26px;
+}
+
+.hero-mark {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+
+.hero-badge,
+.hero-status {
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  padding: 0 14px;
+  border-radius: 999px;
+  font-size: 0.88rem;
+}
+
+.hero-badge {
+  background: rgba(22, 21, 18, 0.06);
+  color: var(--text);
+  font-weight: 700;
+}
+
+.hero-status {
+  background: var(--accent-soft);
+  color: var(--accent-strong);
+  font-weight: 600;
 }
 
 .eyebrow {
@@ -45,33 +76,101 @@ body {
 }
 
 h1 {
-  margin: 0;
-  font-size: clamp(2.3rem, 4vw, 4rem);
-  line-height: 0.98;
+  margin: 18px 0 0;
+  font-size: clamp(2.6rem, 4.8vw, 5rem);
+  line-height: 0.94;
+  letter-spacing: -0.04em;
+  max-width: 900px;
 }
 
 .intro {
-  max-width: 650px;
-  margin: 16px 0 0;
-  font-size: 1rem;
+  max-width: 760px;
+  margin: 20px 0 0;
+  font-size: 1.05rem;
   line-height: 1.7;
   color: var(--muted);
 }
 
+.hero-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 26px;
+}
+
+.hero-card {
+  padding: 18px 18px 20px;
+  border: 1px solid rgba(22, 21, 18, 0.08);
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.48);
+  box-shadow: 0 10px 30px rgba(62, 45, 17, 0.05);
+}
+
+.hero-card-label {
+  margin: 0 0 10px;
+  font-size: 0.82rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent-strong);
+}
+
+.hero-card strong {
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
 .helper {
-  margin: 14px 2px 0;
+  margin: 18px 2px 0;
   color: var(--muted);
   font-size: 0.95rem;
   line-height: 1.6;
 }
 
 .card {
-  padding: 28px;
-  border: 1px solid var(--line);
-  border-radius: 28px;
-  background: var(--panel);
+  padding: 30px;
+  border: 1px solid rgba(22, 21, 18, 0.08);
+  border-radius: 34px;
+  background: var(--panel-strong);
   box-shadow: var(--shadow);
   backdrop-filter: blur(10px);
+}
+
+.card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+  margin-bottom: 22px;
+}
+
+.section-kicker {
+  margin: 0 0 8px;
+  color: var(--accent-strong);
+  font-size: 0.82rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.card-header h2 {
+  margin: 0;
+  font-size: 1.45rem;
+}
+
+.steps {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.steps span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  padding: 0 12px;
+  border-radius: 999px;
+  background: rgba(22, 21, 18, 0.05);
+  color: var(--muted);
+  font-size: 0.88rem;
 }
 
 .upload-form {
@@ -93,8 +192,8 @@ h1 {
   min-height: 52px;
   padding: 0 16px;
   border: 1px solid var(--line);
-  border-radius: 16px;
-  background: rgba(255, 255, 255, 0.8);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.86);
   font: inherit;
   color: var(--text);
 }
@@ -104,10 +203,10 @@ h1 {
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  padding: 18px 20px;
-  border: 1px dashed rgba(20, 99, 86, 0.4);
-  border-radius: 20px;
-  background: rgba(20, 99, 86, 0.05);
+  padding: 22px 22px;
+  border: 1px dashed rgba(15, 108, 91, 0.32);
+  border-radius: 24px;
+  background: rgba(15, 108, 91, 0.04);
   cursor: pointer;
 }
 
@@ -120,29 +219,32 @@ button,
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 48px;
-  padding: 0 20px;
+  min-height: 56px;
+  padding: 0 24px;
   border: 0;
   border-radius: 999px;
   background: var(--accent);
   color: #fff;
   text-decoration: none;
-  font-size: 1rem;
+  font-size: 1.04rem;
   font-weight: 600;
-  transition: transform 180ms ease, background 180ms ease;
+  box-shadow: 0 16px 32px rgba(15, 108, 91, 0.18);
+  transition: transform 180ms ease, background 180ms ease, box-shadow 180ms ease;
 }
 
 button:hover,
 .download-link:hover {
   background: var(--accent-strong);
   transform: translateY(-1px);
+  box-shadow: 0 18px 34px rgba(10, 84, 70, 0.22);
 }
 
 .message {
   margin-top: 18px;
-  padding: 14px 16px;
-  border-radius: 16px;
+  padding: 15px 18px;
+  border-radius: 18px;
   font-size: 0.96rem;
+  line-height: 1.6;
 }
 
 .message.error {
@@ -157,6 +259,16 @@ button:hover,
 
 .result {
   margin-top: 24px;
+  padding: 24px;
+  border: 1px solid rgba(22, 21, 18, 0.08);
+  border-radius: 26px;
+  background: rgba(255, 255, 255, 0.62);
+}
+
+.result-primary {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.85), rgba(249, 255, 252, 0.84)),
+    rgba(255, 255, 255, 0.62);
 }
 
 .result-header {
@@ -177,7 +289,7 @@ textarea {
   min-height: 320px;
   padding: 18px;
   border: 1px solid var(--line);
-  border-radius: 20px;
+  border-radius: 22px;
   background: rgba(255, 255, 255, 0.75);
   color: var(--text);
   resize: vertical;
@@ -189,6 +301,14 @@ textarea {
   .shell {
     width: min(100% - 20px, 920px);
     padding-top: 28px;
+  }
+
+  .hero-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .card-header {
+    flex-direction: column;
   }
 
   .card {

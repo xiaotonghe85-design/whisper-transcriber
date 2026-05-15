@@ -3,20 +3,49 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>录音转文字工具</title>
+    <title>录音转写中文</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
   </head>
   <body>
     <main class="shell">
       <section class="hero">
-        <p class="eyebrow">Whisper Transcriber</p>
-        <h1>公网可部署的 AI 转写站</h1>
+        <div class="hero-mark">
+          <span class="hero-badge">录音转写中文</span>
+          <span class="hero-status">Whisper + 免费翻译双通道</span>
+        </div>
+        <h1>多语音频，一键转成中文文本</h1>
         <p class="intro">
-          使用 Whisper 模型将录音转成可下载的文本。支持 <strong>{{ supported_formats }}</strong>，单文件最大 <strong>{{ max_upload_mb }}MB</strong>。当前模型：<strong>{{ model_name }}</strong>
+          上传录音后，系统会先完成语音识别，再优先使用免费翻译接口自动转成中文。支持 <strong>{{ supported_formats }}</strong>，单文件最大 <strong>{{ max_upload_mb }}MB</strong>，当前模型：<strong>{{ model_name }}</strong>。
         </p>
+        <div class="hero-grid">
+          <article class="hero-card">
+            <p class="hero-card-label">支持语言</p>
+            <strong>阿拉伯语 / 西班牙语 / 英语 / 韩语 / 日语 / 德语 / 泰语 / 法语</strong>
+          </article>
+          <article class="hero-card">
+            <p class="hero-card-label">结果输出</p>
+            <strong>中文结果 + 原始转写 + TXT 下载</strong>
+          </article>
+          <article class="hero-card">
+            <p class="hero-card-label">翻译链路</p>
+            <strong>{{ translation_provider }} 主通道 + MyMemory 备用通道</strong>
+          </article>
+        </div>
       </section>
 
       <section class="card">
+        <div class="card-header">
+          <div>
+            <p class="section-kicker">开始转写</p>
+            <h2>上传音频，生成中文结果</h2>
+          </div>
+          <div class="steps">
+            <span>1. 选语言</span>
+            <span>2. 上传文件</span>
+            <span>3. 开始转写</span>
+          </div>
+        </div>
+
         <form action="{{ url_for('transcribe_audio') }}" method="post" enctype="multipart/form-data" class="upload-form">
           <label class="select-group" for="language">
             <span>音频语言</span>
@@ -34,7 +63,7 @@
         </form>
 
         <p class="helper">
-          支持阿拉伯语、西班牙语、英语、韩语、日语、德语、泰语、法语转写为中文。当前已启用免费翻译容灾链路：{{ translation_provider }} + MyMemory。
+          当前站点名称为 <strong>录音转写中文</strong>。默认会优先输出中文文本，若免费翻译接口临时拥堵，系统会自动切换备用通道。
         </p>
 
         {% if error %}
@@ -54,7 +83,7 @@
         {% endif %}
 
         {% if transcript %}
-        <section class="result">
+        <section class="result result-primary">
           <div class="result-header">
             <h2>{% if translation_notice %}中文结果{% else %}转写结果{% endif %}</h2>
             <a class="download-link" href="{{ download_url }}">下载 {{ output_filename }}</a>
