@@ -34,7 +34,7 @@
         </form>
 
         <p class="helper">
-          支持阿拉伯语、西班牙语、英语、韩语、日语、德语、泰语、法语转写为中文。{% if has_openai_translation %}当前已启用中文翻译模型：{{ translation_model }}。{% else %}要启用“外语转中文”，请配置 OPENAI_API_KEY。{% endif %}
+          支持阿拉伯语、西班牙语、英语、韩语、日语、德语、泰语、法语转写为中文。当前已启用免费翻译接口：{{ translation_provider }}。
         </p>
 
         {% if error %}
@@ -49,10 +49,14 @@
         <div class="message success">{{ translation_notice }}</div>
         {% endif %}
 
+        {% if translation_warning %}
+        <div class="message error">{{ translation_warning }}</div>
+        {% endif %}
+
         {% if transcript %}
         <section class="result">
           <div class="result-header">
-            <h2>中文结果</h2>
+            <h2>{% if translation_notice %}中文结果{% else %}转写结果{% endif %}</h2>
             <a class="download-link" href="{{ download_url }}">下载 {{ output_filename }}</a>
           </div>
           <textarea readonly>{{ transcript }}</textarea>
